@@ -7,12 +7,13 @@
 
 class Cell {
 public:
-    bool operator==(const Cell& other) const {
+    bool operator==(const Cell &other) const {
         return this->pos == other.pos;
     }
-    AssetManager* assetManager;
+
+    AssetManager *assetManager;
     sf::Vector2f pos;
-    enum State{
+    enum State {
         BOMB,
         BOMB_FAIL,
         FLAG_FAIL,
@@ -29,18 +30,27 @@ public:
         SEVEN,
         EIGHT
     };
-    Cell(sf::Vector2i vector2, State state, AssetManager* assetManager);
+
+    Cell(sf::Vector2i vector2, State state, AssetManager *assetManager);
+
     void changeState(State state);
+
     void open();
+
     static std::string stateToString(State state);
+
     Cell::State currentState;
     sf::Sprite sprite;
     bool flagged;
+
     void setFlag(bool value);
+
     void close();
+
     void FlagFail();
+
     void FlagWin();
-private:
+
     bool isOpen{};
 };
 
