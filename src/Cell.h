@@ -10,6 +10,7 @@ public:
     bool operator==(const Cell& other) const {
         return this->pos == other.pos;
     }
+    AssetManager* assetManager;
     sf::Vector2f pos;
     enum State{
         BOMB,
@@ -28,9 +29,8 @@ public:
         SEVEN,
         EIGHT
     };
-    Cell(sf::Vector2i vector2, State state);
+    Cell(sf::Vector2i vector2, State state, AssetManager* assetManager);
     void changeState(State state);
-    void update();
     void open();
     static std::string stateToString(State state);
     Cell::State currentState;

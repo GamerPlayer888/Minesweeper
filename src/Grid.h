@@ -7,7 +7,7 @@
 
 class Grid {
 public:
-    explicit Grid(int size);
+    explicit Grid(int size, AssetManager* assetManager);
     std::vector<Cell> grid;
     int size;
     std::vector<Cell *> getXCellRandomly(int x);

@@ -6,14 +6,17 @@
 #define MINESWEEPER_GAMESTATE_H
 
 
+class Grid;
+
 class Gamestate {
 public:
+
     enum State{
         PLAYING,
         GAMEOVER,
         WIN
     };
-    static void setGameState(State gamestate);
+    static void setGameState(State gamestate, Grid* grid);
     static State currentGamestate;
 };
 

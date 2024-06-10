@@ -21,6 +21,8 @@ std::string extractFileName(const std::string& filePath) {
     return fileName;
 }
 
+AssetManager::AssetManager() = default;
+
 AssetManager::AssetManager(const std::string& path) {
     for (const auto & entry : fs::directory_iterator(path))
     {
@@ -29,8 +31,8 @@ AssetManager::AssetManager(const std::string& path) {
 }
 
 void AssetManager::loadTexture(const std::string& name, const std::string& fileName){
-    sf::Texture texture;
-    if(texture.loadFromFile(fileName)){
+    auto texture = sf::Texture();
+    if( texture.loadFromFile(fileName)){
         this->_Textures[name] = texture;
     } else {
         std::cerr << "Impossibile caricare la texture da " << fileName << std::endl;

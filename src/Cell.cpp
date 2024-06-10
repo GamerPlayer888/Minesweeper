@@ -1,40 +1,36 @@
 #include "Cell.h"
 #include "Minesweeper.h"
 
-Cell::Cell(sf::Vector2i p, State initState) : sprite(Assets.getTexture(stateToString(initState))), pos(p), currentState(initState), flagged(false) {
-    Cell::changeState(initState);
+Cell::Cell(sf::Vector2i p, State initState, AssetManager* assetManager) : assetManager(assetManager), pos(p), currentState(initState), sprite(assetManager->getTexture(stateToString(initState))), flagged(false) {
+    changeState(initState);
     sprite.setPosition(pos);
-}
-
-void Cell::update(){
-    GameWindow.draw(sprite);
 }
 
 void Cell::changeState(Cell::State state) {
     currentState = state;
     if(isOpen){
-        sprite.setTexture(Assets.getTexture(stateToString(currentState)));
+        sprite.setTexture(assetManager->getTexture(stateToString(currentState)));
     }
 }
 
 void Cell::setFlag(bool value){
     if(isOpen) return;
+    flagged = value;
     if(flagged){
-        sprite.setTexture(Assets.getTexture(stateToString(Cell::State::FLAG)));
+        sprite.setTexture(assetManager->getTexture(stateToString(Cell::State::FLAG)));
     }
     else
     {
-        sprite.setTexture(Assets.getTexture(stateToString(Cell::State::CLOSED)));
+        sprite.setTexture(assetManager->getTexture(stateToString(Cell::State::CLOSED)));
     }
-    flagged = value;
 }
 
 void Cell::FlagFail(){
-    sprite.setTexture(Assets.getTexture(stateToString(Cell::State::FLAG_FAIL)));
+    sprite.setTexture(assetManager->getTexture(stateToString(Cell::State::FLAG_FAIL)));
 }
 
 void Cell::FlagWin(){
-    sprite.setTexture(Assets.getTexture(stateToString(Cell::State::FLAG_WIN)));
+    sprite.setTexture(assetManager->getTexture(stateToString(Cell::State::FLAG_WIN)));
 }
 
 std::string Cell::stateToString(Cell::State state) {

@@ -7,14 +7,14 @@
 
 Gamestate::State Gamestate::currentGamestate = Gamestate::PLAYING;
 
-void Gamestate::setGameState(State gamestate) {
+void Gamestate::setGameState(State gamestate, Grid* grid) {
     switch (gamestate) {
         case Gamestate::State::GAMEOVER:
-            grid.showAllBomb();
-            grid.checkForWrongFlags();
+            grid->showAllBomb();
+            grid->checkForWrongFlags();
             break;
         case Gamestate::State::WIN:
-            grid.winFlagChange();
+            grid->winFlagChange();
             break;
         case Gamestate::State::PLAYING:
             break;

@@ -7,7 +7,8 @@
 
  class AssetManager {
 public:
-     AssetManager(const std::string& path);
+     AssetManager();
+     explicit AssetManager(const std::string& path);
 
     sf::Texture &getTexture(const std::string& name);
 private:

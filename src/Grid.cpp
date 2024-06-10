@@ -2,10 +2,10 @@
 #include "algorithm"
 #include <random>
 
-Grid::Grid(int size) : size(size){
+Grid::Grid(int size, AssetManager* assetManager) : size(size){
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
-            Cell c = Cell(sf::Vector2i(j * 32, i * 32), Cell::State::CLOSED);
+            Cell c = Cell(sf::Vector2i(j * 32, i * 32), Cell::State::CLOSED, assetManager);
             grid.push_back(c);
         }
     }
@@ -63,7 +63,7 @@ bool Grid::CheckWinCondition() {
         }
     }
 
-    return (flaggedBombs == bombs.size() && totalFlaggedCells == bombs.size());
+    return grid.size() - bombs.size() == visitedPos.size() && (flaggedBombs == bombs.size() && totalFlaggedCells == bombs.size());
 }
 
 void Grid::winFlagChange(){
