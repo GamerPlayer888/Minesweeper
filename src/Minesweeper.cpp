@@ -9,7 +9,7 @@ int main() {
     const auto videoMode = sf::VideoMode(Size * 32, Size * 32);
     sf::RenderWindow GameWindow;
     GameWindow.create(videoMode, "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
-    AssetManager Assets = *new AssetManager("../resources");
+    AssetManager Assets = *new AssetManager("./resources");
     auto grid = Grid(Size, &Assets);
     grid.generateBombs(bombsCount);
     grid.generateBombCountForEveryCell();
