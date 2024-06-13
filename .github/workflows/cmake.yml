@@ -47,14 +47,34 @@ jobs:
         with:
           version: ${{ matrix.sfml }}
 
-      - name: Configure and Build Project
+      - name: Configure CMake on macOS
+        if: runner.os == 'macOS'
         uses: threeal/cmake-action@main
         with:
+          source-dir: src
           build-dir: build
           build-type: ${{ matrix.build_type }}
+          args: -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
-      - name: Archive build artifacts
+      - name: Configure CMake on other platforms
+        if: runner.os != 'macOS'
+        uses: threeal/cmake-action@main
+        with:
+          source-dir: src
+          build-dir: build
+          build-type: ${{ matrix.build_type }}
+          args: -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="-static-libgcc -static-libstdc++"
+
+      - name: Build Project
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Archive build artifacts on Windows
+        if: matrix.os == 'windows-latest'
         run: cd build && tar -cavf "minesweeper-${{ matrix.os }}.zip" "minesweeper.exe"
+
+      - name: Archive build artifacts on other platforms
+        if: matrix.os != 'windows-latest'
+        run: cd build && tar -cavf "minesweeper-${{ matrix.os }}.zip" "minesweeper"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
