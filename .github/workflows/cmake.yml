@@ -50,7 +50,6 @@ jobs:
       - name: Configure and Build Project
         uses: threeal/cmake-action@main
         with:
-          source-dir: src
           build-dir: build
           build-type: ${{ matrix.build_type }}
 
