@@ -1,0 +1,72 @@
+name: CMake on multiple platforms
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {sfml: latest, build_type: Release}
+          - {sfml: nightly, build_type: Release}
+          - {sfml: '2.5.1', build_type: Debug}
+        os:
+          - ubuntu-latest
+          - macos-latest  # arm64
+          - macos-13  # x64
+          - windows-latest
+        include:
+          - os: ubuntu-latest
+            sfml: package
+            build_type: Release
+          - os: macos-latest
+            sfml: package
+            build_type: Release
+          - os: macos-13
+            sfml: package
+            build_type: Release
+        exclude:
+          - os: macos-latest
+            config:
+              sfml: '2.5.1'
+              build_type: Debug
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SFML
+        uses: oprypin/install-sfml@v1
+        with:
+          version: ${{ matrix.sfml }}
+
+      - name: Configure and Build Project
+        uses: threeal/cmake-action@main
+        with:
+          source-dir: src
+          build-dir: build
+          build-type: ${{ matrix.build_type }}
+
+      - name: Archive build artifacts
+        run: cd build && tar -cavf "minesweeper-${{ matrix.os }}.zip" "minesweeper.exe"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: minesweeper-${{ matrix.os }}
+          path: build/*.zip
+
+      - name: Publish in release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            build/minesweeper-${{ matrix.os }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
