@@ -57,6 +57,14 @@ jobs:
           build-dir: build
           args: -DCMAKE_BUILD_TYPE=Release
 
+      - name: List build directory contents (Windows)
+        if: matrix.os == 'windows-latest'
+        run: dir build
+  
+      - name: List build directory contents (non-Windows)
+        if: matrix.os != 'windows-latest'
+        run: ls build
+
       - name: Compress action step
         if: matrix.os != 'windows-latest'
         uses: a7ul/tar-action@v1.1.0
@@ -78,6 +86,7 @@ jobs:
           outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
 
       - name: Upload build artifacts
+        if: matrix.os != 'windows-latest'
         uses: actions/upload-artifact@v3
         with:
           name: minesweeper-${{ matrix.os }}
