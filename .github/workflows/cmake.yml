@@ -40,6 +40,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Visual Studio shell
+        if: matrix.os == 'windows'
+        uses: TheMrMilchmann/setup-msvc-dev@v3
+
       - name: Setup SFML
         uses: oprypin/install-sfml@v1
         with:
