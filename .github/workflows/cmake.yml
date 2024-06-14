@@ -59,7 +59,7 @@ jobs:
 
       - name: List build directory contents (Windows)
         if: matrix.os == 'windows-latest'
-        run: dir build && dir build/x64 && build/minesweeper.dir
+        run: dir build && dir build/x64 && dir build/minesweeper.dir
   
       - name: List build directory contents (non-Windows)
         if: matrix.os != 'windows-latest'
