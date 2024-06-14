@@ -15,8 +15,6 @@ jobs:
       matrix:
         config:
           - {sfml: latest, build_type: Release}
-          - {sfml: nightly, build_type: Release}
-          - {sfml: '2.5.1', build_type: Debug}
         os:
           - ubuntu-latest
           - macos-latest  # arm64
@@ -51,12 +49,14 @@ jobs:
         uses: threeal/cmake-action@main
         with:
           build-dir: build
-          build-type: ${{ matrix.build_type }}
+          args: -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
-      - name: Archive build artifacts
+      - name: Archive build artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: cd build && tar -cavf "minesweeper-${{ matrix.os }}.zip" "minesweeper.exe"
-      - if: matrix.os != 'windows-latest'
+
+      - name: Archive build artifacts for non-Windows
+        if: matrix.os != 'windows-latest'
         run: cd build && tar -cavf "minesweeper-${{ matrix.os }}.zip" "minesweeper"
 
       - name: Upload build artifacts
