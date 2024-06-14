@@ -40,12 +40,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Visual Studio shell
-        if: matrix.os == 'windows-latest'
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
-
       - name: Setup SFML
         uses: oprypin/install-sfml@v1
         with:
@@ -56,14 +50,6 @@ jobs:
         with:
           build-dir: build
           args: -DCMAKE_BUILD_TYPE=Release
-
-      - name: List build directory contents (Windows)
-        if: matrix.os == 'windows-latest'
-        run: dir build && dir build/x64 && dir build/minesweeper.dir
-  
-      - name: List build directory contents (non-Windows)
-        if: matrix.os != 'windows-latest'
-        run: ls build
 
       - name: Compress action step
         if: matrix.os != 'windows-latest'
