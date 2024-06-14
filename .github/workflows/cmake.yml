@@ -65,7 +65,7 @@ jobs:
           cwd: ./build
           files: |
             ./minesweeper
-          outPath: minesweeper-${{ matrix.os }}.tar.gz
+          outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
