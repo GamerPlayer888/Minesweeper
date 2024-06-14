@@ -58,6 +58,7 @@ jobs:
           args: -DCMAKE_BUILD_TYPE=Release
 
       - name: Compress action step
+        if: matrix.os != 'windows-latest'
         uses: a7ul/tar-action@v1.1.0
         with:
           command: c
@@ -67,6 +68,7 @@ jobs:
           outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
 
       - name: Compress action step for the worst OS in existence
+        if: matrix.os == 'windows-latest'
         uses: a7ul/tar-action@v1.1.0
         with:
           command: c
@@ -76,7 +78,6 @@ jobs:
           outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
 
       - name: Upload build artifacts
-        if: matrix.os != 'windows-latest'
         uses: actions/upload-artifact@v3
         with:
           name: minesweeper-${{ matrix.os }}
