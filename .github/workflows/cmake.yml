@@ -49,7 +49,7 @@ jobs:
         uses: threeal/cmake-action@main
         with:
           build-dir: build
-          args: -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          args: -DCMAKE_BUILD_TYPE=Release
 
       - name: Archive build artifacts for Windows
         if: matrix.os == 'windows-latest'
