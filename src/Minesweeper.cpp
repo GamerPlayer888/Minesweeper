@@ -48,7 +48,7 @@ int main() {
 
         sf::Vector2f mouse = GameWindow.mapPixelToCoords(sf::Mouse::getPosition(GameWindow));
 
-        if (!(mouse.x < 0 or mouse.x > GameWindow.getSize().x or mouse.y < 0 or mouse.y > GameWindow.getSize().y)) {
+        if (!(mouse.x < 0 || mouse.x > GameWindow.getSize().x || mouse.y < 0 || mouse.y > GameWindow.getSize().y)) {
             int xCoord = (mouse.x * grid.size) / GameWindow.getSize().x;
             int yCoord = (mouse.y * grid.size) / GameWindow.getSize().y;
 
