@@ -62,8 +62,9 @@ jobs:
         id: compress
         with:
           command: c
+          cwd: ./build
           files: |
-              ./build/minesweeper.exe
+            ./minesweeper
           outPath: minesweeper-${{ matrix.os }}.tar.gz
 
       - name: Upload build artifacts
