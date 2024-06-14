@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.7.2)
 project(minesweeper)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+if (APPLE)
+    message(STATUS "Configuring for macOS - Removing -static-libgcc and -static-libstdc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+else()
+    message(STATUS "Configuring for non-macOS - Keeping -static-libgcc and -static-libstdc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+endif()
 
 include(FetchContent)
 set(BUILD_SHARED_LIBS OFF)
