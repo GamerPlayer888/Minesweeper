@@ -56,6 +56,10 @@ jobs:
           install-build: false
 
       - name: Compress action step
+        if: matrix.os == 'windows-latest'
+        run: dir build
+
+      - name: Compress action step
         if: matrix.os != 'windows-latest'
         uses: a7ul/tar-action@v1.1.0
         with:
