@@ -65,16 +65,12 @@ jobs:
             ./minesweeper
           outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
 
-      - name: Checking dir for debugging...
-        if: matrix.os == 'windows-latest'
-        run: dir ./build/x64/Release
-
       - name: Compress action step for the worst OS in existence
         if: matrix.os == 'windows-latest'
         uses: a7ul/tar-action@v1.1.0
         with:
           command: c
-          cwd: ./build/x64/Release
+          cwd: ./build
           files: |
             ./minesweeper.exe
           outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
