@@ -1,0 +1,91 @@
+name: CMake on multiple platforms
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {sfml: latest, build_type: Release}
+        os:
+          - ubuntu-latest
+          - macos-latest  # arm64
+          - macos-13  # x64
+          - windows-latest
+        include:
+          - os: ubuntu-latest
+            sfml: package
+            build_type: Release
+          - os: macos-latest
+            sfml: package
+            build_type: Release
+          - os: macos-13
+            sfml: package
+            build_type: Release
+        exclude:
+          - os: macos-latest
+            config:
+              sfml: '2.5.1'
+              build_type: Release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SFML
+        uses: oprypin/install-sfml@v1
+        with:
+          version: ${{ matrix.sfml }}
+
+      - name: Build
+        uses: ashutoshvarma/action-cmake-build@master
+        with:
+          build-dir: ./build
+          cc: gcc
+          cxx: g++
+          build-type: Release
+          run-test: false
+          install-build: false
+
+      - name: Compress action step
+        if: matrix.os != 'windows-latest'
+        uses: a7ul/tar-action@v1.1.0
+        with:
+          command: c
+          cwd: ./build
+          files: |
+            ./minesweeper
+          outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
+
+      - name: Compress action step for Windows
+        if: matrix.os == 'windows-latest'
+        uses: a7ul/tar-action@v1.1.0
+        with:
+          command: c
+          cwd: ./build/Release
+          files: |
+            ./minesweeper.exe
+          outPath: ./build/minesweeper-${{ matrix.os }}.tar.gz
+
+      - name: Upload build artifacts
+        if: matrix.os != 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: minesweeper-${{ matrix.os }}
+          path: build/*.tar.gz
+
+      - name: Publish in release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            build/minesweeper-${{ matrix.os }}.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
