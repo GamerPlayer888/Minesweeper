@@ -16,7 +16,7 @@ public:
         GAMEOVER,
         WIN
     };
-    static void setGameState(State gamestate, Grid* grid);
+    static void setGameState(State gamestate);
     static State currentGamestate;
 };
 

@@ -7,9 +7,11 @@
 
 class Grid {
 public:
-    explicit Grid(int size, AssetManager* assetManager);
+    Grid(sf::RenderWindow *window, int size, AssetManager *assetManager);
+
     std::vector<Cell> grid;
     int size;
+
     std::vector<Cell *> getXCellRandomly(int x);
 
     void generateBombs(int x);
@@ -19,15 +21,25 @@ public:
     void generateBombCountForEveryCell();
 
     void openCellAtX(int x);
+
     void reset();
+
     void showAllBomb();
+
     void checkForWrongFlags();
+
     bool CheckWinCondition();
+
     void winFlagChange();
+
+    void handleEvent(sf::Event);
+
 private:
     std::unordered_set<int> visitedPos;
-    std::vector<Cell*> bombs;
-
+    std::vector<Cell *> bombs;
+    sf::RenderWindow *window;
+    int flagsCount;
+    sf::Vector2i pos;
 };
 
 

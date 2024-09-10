@@ -5,6 +5,4 @@
 #include "SFML/Graphics.hpp"
 #include "Grid.h"
 
-extern int bombsCount;
-
 #endif //MINESWEEPER_MINESWEEPER_H
